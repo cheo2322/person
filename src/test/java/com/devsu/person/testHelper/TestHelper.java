@@ -1,4 +1,4 @@
-package testHelper;
+package com.devsu.person.testHelper;
 
 import com.devsu.person.entity.Client;
 

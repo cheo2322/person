@@ -1,20 +1,21 @@
-package service.impl;
+package com.devsu.person.service.impl;
 
 import com.devsu.person.entity.Client;
 import com.devsu.person.entity.dto.ClientDto;
-import com.devsu.person.service.impl.ClientServiceImpl;
+import com.devsu.person.repository.ClientRepository;
+import com.devsu.person.testHelper.TestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import com.devsu.person.repository.ClientRepository;
-import testHelper.TestHelper;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class ClientServiceImplTest {
 
