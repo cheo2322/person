@@ -1,6 +1,13 @@
 package entity.dto;
 
-public class ClientDto {
+import lombok.Getter;
+import lombok.Setter;
 
-    private String id;
+@Getter
+@Setter
+public class ClientDto {
+    private Long id;
+    private String clientId;
+    private String password;
+    private String status;
 }
