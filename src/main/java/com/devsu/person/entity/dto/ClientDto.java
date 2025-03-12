@@ -1,4 +1,4 @@
-package entity.dto;
+package com.devsu.person.entity.dto;
 
 import lombok.Getter;
 import lombok.Setter;

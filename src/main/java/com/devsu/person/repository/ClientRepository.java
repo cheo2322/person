@@ -1,6 +1,6 @@
-package repository;
+package com.devsu.person.repository;
 
-import entity.Client;
+import com.devsu.person.entity.Client;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

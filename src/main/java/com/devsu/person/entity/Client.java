@@ -1,4 +1,4 @@
-package entity;
+package com.devsu.person.entity;
 
 import lombok.Getter;
 import lombok.Setter;

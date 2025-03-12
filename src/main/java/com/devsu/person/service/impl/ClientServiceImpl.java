@@ -1,10 +1,10 @@
-package service.impl;
+package com.devsu.person.service.impl;
 
-import entity.Client;
-import entity.dto.ClientDto;
+import com.devsu.person.entity.Client;
+import com.devsu.person.entity.dto.ClientDto;
 import org.springframework.stereotype.Service;
-import repository.ClientRepository;
-import service.ClientService;
+import com.devsu.person.repository.ClientRepository;
+import com.devsu.person.service.ClientService;
 
 import java.util.List;
 import java.util.stream.Collectors;

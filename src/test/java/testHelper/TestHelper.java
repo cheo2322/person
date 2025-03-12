@@ -1,6 +1,6 @@
 package testHelper;
 
-import entity.Client;
+import com.devsu.person.entity.Client;
 
 public class TestHelper {
 

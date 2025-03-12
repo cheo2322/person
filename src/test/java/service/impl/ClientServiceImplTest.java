@@ -1,13 +1,14 @@
 package service.impl;
 
-import entity.Client;
-import entity.dto.ClientDto;
+import com.devsu.person.entity.Client;
+import com.devsu.person.entity.dto.ClientDto;
+import com.devsu.person.service.impl.ClientServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import repository.ClientRepository;
+import com.devsu.person.repository.ClientRepository;
 import testHelper.TestHelper;
 
 import java.util.List;

@@ -1,7 +1,7 @@
-package service;
+package com.devsu.person.service;
 
-import entity.Client;
-import entity.dto.ClientDto;
+import com.devsu.person.entity.Client;
+import com.devsu.person.entity.dto.ClientDto;
 
 import java.util.List;
 
