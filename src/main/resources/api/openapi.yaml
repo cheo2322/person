@@ -16,6 +16,7 @@ paths:
   /clients:
     get:
       summary: List all clients
+      operationId: getClients
       responses:
         '200':
           description: List of clients
@@ -27,6 +28,7 @@ paths:
                   $ref: '#/components/schemas/Client'
     post:
       summary: Create a new client
+      operationId: createClient
       requestBody:
         content:
           application/json:
@@ -38,6 +40,7 @@ paths:
   /clients/{id}:
     get:
       summary: Get a client by ID
+      operationId: getClient
       parameters:
         - name: id
           in: path
@@ -56,6 +59,7 @@ paths:
           description: Client not found
     patch:
       summary: Partially update a client by ID
+      operationId: updateClient
       parameters:
         - name: id
           in: path
@@ -75,6 +79,7 @@ paths:
           description: Client not found
     delete:
       summary: Delete a client by ID
+      operationId: deleteClient
       parameters:
         - name: id
           in: path
