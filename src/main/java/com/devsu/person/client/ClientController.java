@@ -3,42 +3,49 @@ package com.devsu.person.client;
 import com.devsu.person.entity.Client;
 import com.devsu.person.entity.dto.ClientDto;
 import com.devsu.person.service.ClientService;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/test/v1/clients")
 public class ClientController {
-    private final ClientService clientService;
 
-    public ClientController(ClientService clientService) {
-        this.clientService = clientService;
-    }
+  private final ClientService clientService;
 
-    @PostMapping
-    public ClientDto createClient(@RequestBody Client client) {
-        return clientService.createClient(client);
-    }
+  public ClientController(ClientService clientService) {
+    this.clientService = clientService;
+  }
 
-    @GetMapping
-    public List<ClientDto> getClients() {
-        return clientService.getClients();
-    }
+  @PostMapping
+  public ClientDto createClient(@RequestBody Client client) {
+    return clientService.createClient(client);
+  }
 
-    @GetMapping("/{clientId}")
-    public ClientDto getClient(@PathVariable String clientId) {
-        return clientService.getClient(clientId);
-    }
+  @GetMapping
+  public List<ClientDto> getClients() {
+    return clientService.getClients();
+  }
 
-    @PutMapping("/{clientId}")
-    public ClientDto updateClient(@PathVariable String clientId, @RequestBody ClientDto clientDto) {
-        clientDto.setClientId(clientId);
-        return clientService.updateClient(clientDto);
-    }
+  @GetMapping("/{clientId}")
+  public ClientDto getClient(@PathVariable String clientId) {
+    return clientService.getClient(clientId);
+  }
 
-    @DeleteMapping("/{clientId}")
-    public ClientDto deleteClient(@PathVariable String clientId) {
-        return clientService.deleteClient(clientId);
-    }
+  @PutMapping("/{clientId}")
+  public ClientDto updateClient(@PathVariable String clientId, @RequestBody ClientDto clientDto) {
+    clientDto.setClientId(clientId);
+    return clientService.updateClient(clientDto);
+  }
+
+  @DeleteMapping("/{clientId}")
+  public ClientDto deleteClient(@PathVariable String clientId) {
+    return clientService.deleteClient(clientId);
+  }
 }

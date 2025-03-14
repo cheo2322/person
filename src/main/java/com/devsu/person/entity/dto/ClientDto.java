@@ -9,5 +9,5 @@ public class ClientDto {
     private Long id;
     private String clientId;
     private String password;
-    private String status;
+    private Boolean status;
 }
