@@ -57,11 +57,19 @@ public class ClientServiceImpl implements ClientService {
   }
 
   private ClientDto toDto(Client client) {
-    ClientDto clientDto = new ClientDto();
-    clientDto.setId(client.getId());
-    clientDto.setClientId(client.getClientId());
-    clientDto.setPassword(client.getPassword());
-    clientDto.setStatus(client.getStatus());
-    return clientDto;
+    //    ClientDto clientDto = new ClientDto();
+    //    clientDto.setId(client.getId());
+    //    clientDto.setClientId(client.getClientId());
+    //    clientDto.setPassword(client.getPassword());
+    //    clientDto.setStatus(client.getStatus());
+    return null;
+  }
+
+  private void verifyClient(Client client) {
+    Optional<Client> byClientId = clientRepository.findByClientId(client.getClientId());
+
+    if (byClientId.isPresent()) {
+      throw new DuplicateIdentificationException("Identification already registered.");
+    }
   }
 }
