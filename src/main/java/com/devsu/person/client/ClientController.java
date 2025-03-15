@@ -1,10 +1,10 @@
 package com.devsu.person.client;
 
-import com.devsu.person.entity.Client;
 import com.devsu.person.entity.dto.ClientDto;
 import com.devsu.person.entity.dto.ClientRecord;
 import com.devsu.person.service.ClientService;
 import java.util.List;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,8 +32,8 @@ public class ClientController {
   }
 
   @GetMapping
-  public List<ClientDto> getClients() {
-    return clientService.getClients();
+  public ResponseEntity<List<ClientDto>> getClients() {
+    return ResponseEntity.ok(clientService.getClients());
   }
 
   @GetMapping("/{clientId}")

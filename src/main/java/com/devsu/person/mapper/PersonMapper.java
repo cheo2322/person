@@ -2,6 +2,7 @@ package com.devsu.person.mapper;
 
 import com.devsu.person.entity.Client;
 import com.devsu.person.entity.Person;
+import com.devsu.person.entity.dto.ClientDto;
 import com.devsu.person.entity.dto.ClientRecord;
 
 /**
@@ -10,9 +11,9 @@ import com.devsu.person.entity.dto.ClientRecord;
 public class PersonMapper {
 
   /**
-   * Get a {@Person} from a {@ClientRecord}.
+   * Get a {@link Person} from a {@link ClientRecord}.
    * @param clientRecord the instance to be mapped.
-   * @return A {@Person} instance with details from the record.
+   * @return A {@link Person} instance with details from the record.
    */
   public static Person recordToPerson(ClientRecord clientRecord) {
     return Person.builder()
@@ -26,9 +27,9 @@ public class PersonMapper {
   }
 
   /**
-   * Get a {@Client} from a {@ClientRecord}.
+   * Get a {@link Client} from a {@link ClientRecord}.
    * @param clientRecord the instance to be mapped.
-   * @return A {@Client} instance with details from the record.
+   * @return A {@link Client} instance with details from the record.
    */
   public static Client recordToClient(ClientRecord clientRecord) {
     return Client.builder()
@@ -36,5 +37,9 @@ public class PersonMapper {
         .password(clientRecord.password())
         .status(clientRecord.status())
         .build();
+  }
+
+  public static ClientDto clientToDto(Client client) {
+    return new ClientDto(client.getClientId());
   }
 }

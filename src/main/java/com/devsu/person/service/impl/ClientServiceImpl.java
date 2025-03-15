@@ -43,7 +43,9 @@ public class ClientServiceImpl implements ClientService {
 
   @Override
   public List<ClientDto> getClients() {
-    return clientRepository.findAll().stream().map(this::toDto).collect(Collectors.toList());
+    return clientRepository.findAll().stream()
+        .map(PersonMapper::clientToDto)
+        .collect(Collectors.toList());
   }
 
   @Override
@@ -74,17 +76,15 @@ public class ClientServiceImpl implements ClientService {
     return null;
   }
 
-  private ClientDto toDto(Client client) {
-    //    ClientDto clientDto = new ClientDto();
-    //    clientDto.setId(client.getId());
-    //    clientDto.setClientId(client.getClientId());
-    //    clientDto.setPassword(client.getPassword());
-    //    clientDto.setStatus(client.getStatus());
-    return null;
-  }
-
-  private void verifyClient(Client client) {
-    Optional<Client> byClientId = clientRepository.findByClientId(client.getClientId());
+  /**
+   * Verify if a {@link Client} is part of the clients database, by using the person identification.
+   *
+   * @param personIdentification the identification from the {@link Person} related to the {@link
+   *     Client} to be found.
+   */
+  private void verifyClient(String personIdentification) {
+    Optional<Client> clientByPersonIdentification =
+        clientRepository.findByPersonIdentification(personIdentification);
 
     if (clientByPersonIdentification.isPresent()) {
       throw new DuplicateIdentificationException("Identification already registered for a client.");
