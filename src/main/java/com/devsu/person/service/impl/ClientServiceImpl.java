@@ -4,7 +4,7 @@ import com.devsu.person.entity.Client;
 import com.devsu.person.entity.Person;
 import com.devsu.person.entity.dto.ClientDto;
 import com.devsu.person.entity.dto.ClientRecord;
-import com.devsu.person.handler.exception.DuplicateIdentificationException;
+import com.devsu.person.handler.exception.DuplicateEntityException;
 import com.devsu.person.handler.exception.EntityNotFoundException;
 import com.devsu.person.mapper.PersonMapper;
 import com.devsu.person.repository.ClientRepository;
@@ -29,16 +29,17 @@ public class ClientServiceImpl implements ClientService {
 
   @Override
   public void createClient(ClientRecord clientRecord) {
-    Person person = PersonMapper.recordToPerson(clientRecord);
+    this.verifyClient(clientRecord);
+
+    Optional<Person> personDB =
+        personRepository.findByIdentification(clientRecord.identification());
+    if (personDB.isEmpty()) {
+      personRepository.save(PersonMapper.recordToPerson(clientRecord));
+    }
+
+    Person person = personDB.orElse(PersonMapper.recordToPerson(clientRecord));
     Client client = PersonMapper.recordToClient(clientRecord);
     client.setPerson(person);
-
-    this.verifyClient(client.getPerson().getIdentification());
-
-    Optional<Person> personDB = personRepository.findByIdentification(person.getIdentification());
-    if (personDB.isEmpty()) {
-      personRepository.save(person);
-    }
 
     clientRepository.save(client);
   }
@@ -117,7 +118,8 @@ public class ClientServiceImpl implements ClientService {
 
   @Override
   public void deleteClient(String personIdentification) {
-    Optional<Client> clientByPersonIdentification = clientRepository.findByPersonIdentification(personIdentification);
+    Optional<Client> clientByPersonIdentification =
+        clientRepository.findByPersonIdentification(personIdentification);
 
     if (clientByPersonIdentification.isEmpty()) {
       throw new EntityNotFoundException("Client not found.");
@@ -132,15 +134,20 @@ public class ClientServiceImpl implements ClientService {
   /**
    * Verify if a {@link Client} is part of the clients database, by using the person identification.
    *
-   * @param personIdentification the identification from the {@link Person} related to the {@link
-   *     Client} to be found.
+   * @param clientRecord the clientRecord with client's information to be found.
    */
-  private void verifyClient(String personIdentification) {
+  private void verifyClient(ClientRecord clientRecord) {
+    Optional<Client> clientByClientId = clientRepository.findByClientId(clientRecord.clientId());
+
+    if (clientByClientId.isPresent()) {
+      throw new DuplicateEntityException("clientId already in use.");
+    }
+
     Optional<Client> clientByPersonIdentification =
-        clientRepository.findByPersonIdentification(personIdentification);
+        clientRepository.findByPersonIdentification(clientRecord.identification());
 
     if (clientByPersonIdentification.isPresent()) {
-      throw new DuplicateIdentificationException("Identification already registered for a client.");
+      throw new DuplicateEntityException("identification already registered for a client.");
     }
   }
 }

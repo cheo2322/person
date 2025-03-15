@@ -1,7 +1,7 @@
 package com.devsu.person.handler;
 
 import com.devsu.person.handler.exception.EntityNotFoundException;
-import com.devsu.person.handler.exception.DuplicateIdentificationException;
+import com.devsu.person.handler.exception.DuplicateEntityException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class DevsuTestExceptionHandler {
 
-  @ExceptionHandler(DuplicateIdentificationException.class)
+  @ExceptionHandler(DuplicateEntityException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ResponseEntity<DevsuError> handleDuplicateIdentificationException(
-      DuplicateIdentificationException ex) {
+      DuplicateEntityException ex) {
     return new ResponseEntity<>(new DevsuError(ex.getMessage()), HttpStatus.BAD_REQUEST);
   }
 

@@ -17,13 +17,5 @@ CREATE TABLE IF NOT EXISTS client (
     FOREIGN KEY (person_identification) REFERENCES person (identification)
 );
 
-INSERT INTO person (name, gender, age, identification, address, phone)
-VALUES ('Jose Lema', 'MALE', 30, '1234567890', 'Otavalo y sn principal', '098254785'),
-       ('Marianela Montalvo', 'FEMALE', 41, '1234567891', 'Amazonas y NNUU', '097548965'),
-       ('Juan Osorio', 'MALE', 29, '1234567893', '13 de junio y Equinoccial', '098874587');
 
-INSERT INTO client (client_id, password, status, person_identification)
-VALUES ('jlema', '1234', true, '1234567890'),
-       ('mmontalvo', '5678', true, '1234567891'),
-       ('josorio', '5678', true, '1234567893');
 

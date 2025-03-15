@@ -10,7 +10,7 @@ import com.devsu.person.entity.Client;
 import com.devsu.person.entity.Person;
 import com.devsu.person.entity.dto.ClientDto;
 import com.devsu.person.entity.dto.ClientRecord;
-import com.devsu.person.handler.exception.DuplicateIdentificationException;
+import com.devsu.person.handler.exception.DuplicateEntityException;
 import com.devsu.person.handler.exception.EntityNotFoundException;
 import com.devsu.person.repository.ClientRepository;
 import com.devsu.person.repository.PersonRepository;
@@ -83,22 +83,44 @@ class ClientServiceImplTest {
   }
 
   @Test
-  void shouldThrowDuplicateIdentificationException() {
+  void shouldThrowDuplicateEntityException_whenClientIdAlreadyExists() {
     // given
     ClientRecord clientRecord = TestHelper.createClientRecord();
     Client client = TestHelper.createClientInstance();
 
+    when(clientRepository.findByClientId(anyString())).thenReturn(Optional.of(client));
+
+    // when
+    DuplicateEntityException duplicateEntityException =
+        assertThrows(
+            DuplicateEntityException.class, () -> clientService.createClient(clientRecord));
+
+    // then
+    assertEquals("clientId already in use.", duplicateEntityException.getMessage());
+
+    verify(clientRepository).findByClientId(anyString());
+  }
+
+  @Test
+  void shouldThrowDuplicateEntityException_whenPersonIdentificationAlreadyHasAClientRelated() {
+    // given
+    ClientRecord clientRecord = TestHelper.createClientRecord();
+    Client client = TestHelper.createClientInstance();
+
+    when(clientRepository.findByClientId(anyString())).thenReturn(Optional.empty());
     when(clientRepository.findByPersonIdentification(anyString())).thenReturn(Optional.of(client));
 
     // when
-    DuplicateIdentificationException duplicateIdentificationException =
+    DuplicateEntityException duplicateEntityException =
         assertThrows(
-            DuplicateIdentificationException.class, () -> clientService.createClient(clientRecord));
+            DuplicateEntityException.class, () -> clientService.createClient(clientRecord));
 
     // then
     assertEquals(
-        "Identification already registered for a client.",
-        duplicateIdentificationException.getMessage());
+        "identification already registered for a client.", duplicateEntityException.getMessage());
+
+    verify(clientRepository).findByClientId(anyString());
+    verify(clientRepository).findByPersonIdentification(anyString());
   }
 
   @Test
