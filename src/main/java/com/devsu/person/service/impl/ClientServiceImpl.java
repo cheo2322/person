@@ -29,14 +29,14 @@ public class ClientServiceImpl implements ClientService {
   public void createClient(ClientRecord clientRecord) {
     Person person = PersonMapper.recordToPerson(clientRecord);
     Client client = PersonMapper.recordToClient(clientRecord);
+    client.setPerson(person);
 
-    this.verifyClient(client);
+    this.verifyClient(client.getPerson().getIdentification());
 
     Optional<Person> personDB = personRepository.findByIdentification(person.getIdentification());
     if (personDB.isEmpty()) {
       personRepository.save(person);
     }
-    client.setPerson(person);
 
     clientRepository.save(client);
   }
@@ -86,8 +86,8 @@ public class ClientServiceImpl implements ClientService {
   private void verifyClient(Client client) {
     Optional<Client> byClientId = clientRepository.findByClientId(client.getClientId());
 
-    if (byClientId.isPresent()) {
-      throw new DuplicateIdentificationException("Identification already registered.");
+    if (clientByPersonIdentification.isPresent()) {
+      throw new DuplicateIdentificationException("Identification already registered for a client.");
     }
   }
 }

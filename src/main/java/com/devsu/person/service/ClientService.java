@@ -2,13 +2,15 @@ package com.devsu.person.service;
 
 import com.devsu.person.entity.dto.ClientDto;
 import com.devsu.person.entity.dto.ClientRecord;
+import com.devsu.person.handler.exception.DuplicateIdentificationException;
 
 import java.util.List;
 
 public interface ClientService {
 
     /**
-     * Create a client.
+     * Create a client. If the identification is already present for one client or person,
+     * throw a {@link DuplicateIdentificationException}
      * @param client with data to be created.
      */
     void createClient(ClientRecord client);
