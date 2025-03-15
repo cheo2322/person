@@ -208,19 +208,32 @@ class ClientServiceImplTest {
     verify(personRepository).findByIdentification(anyString());
   }
 
-  //  @Test
-  //  void shouldDeleteClient_andReturnClientDto() {
-  //      // given
-  //      String clientId = "id1";
-  //      Client client = TestHelper.createClientInstance();
-  //      when(clientRepository.findByClientId(clientId)).thenReturn(client);
-  //
-  //      // when
-  //      ClientDto deletedClient = clientService.deleteClient(clientId);
-  //
-  //      // then
-  //      assertNotNull(deletedClient);
-  //
-  //      verify(clientRepository).delete(client);
-  //  }
+  @Test
+  void shouldDeleteClient() {
+    // given
+    Client client = TestHelper.createClientInstance();
+
+    when(clientRepository.findByPersonIdentification(anyString())).thenReturn(Optional.of(client));
+
+    // when
+    clientService.deleteClient("12345");
+
+    // then
+    verify(clientRepository).findByPersonIdentification(anyString());
+  }
+
+  @Test
+  void shouldThrowEntityNotFoundException_whenClientNotFound_InDeleteClient() {
+    // given
+    when(clientRepository.findByPersonIdentification(anyString())).thenReturn(Optional.empty());
+
+    // when
+    EntityNotFoundException entityNotFoundException =
+        assertThrows(EntityNotFoundException.class, () -> clientService.deleteClient("12345"));
+
+    // then
+    assertEquals("Client not found.", entityNotFoundException.getMessage());
+
+    verify(clientRepository).findByPersonIdentification(anyString());
+  }
 }

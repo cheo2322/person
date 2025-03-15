@@ -116,13 +116,17 @@ public class ClientServiceImpl implements ClientService {
   }
 
   @Override
-  public ClientDto deleteClient(String clientId) {
-    Client client = clientRepository.findByClientId(clientId);
-    if (client != null) {
-      clientRepository.delete(client);
-      return toDto(client);
+  public void deleteClient(String personIdentification) {
+    Optional<Client> clientByPersonIdentification = clientRepository.findByPersonIdentification(personIdentification);
+
+    if (clientByPersonIdentification.isEmpty()) {
+      throw new EntityNotFoundException("Client not found.");
     }
-    return null;
+
+    Client client = clientByPersonIdentification.get();
+    client.setStatus(false);
+
+    clientRepository.save(client);
   }
 
   /**

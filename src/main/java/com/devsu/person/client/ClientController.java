@@ -50,8 +50,10 @@ public class ClientController {
     return ResponseEntity.ok().build();
   }
 
-  @DeleteMapping("/{clientId}")
-  public ClientDto deleteClient(@PathVariable String clientId) {
-    return clientService.deleteClient(clientId);
+  @DeleteMapping("/{personIdentification}")
+  public ResponseEntity<Void> deleteClient(@PathVariable String personIdentification) {
+    clientService.deleteClient(personIdentification);
+
+    return ResponseEntity.ok().build();
   }
 }
