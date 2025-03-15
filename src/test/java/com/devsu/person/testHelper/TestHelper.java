@@ -2,6 +2,7 @@ package com.devsu.person.testHelper;
 
 import com.devsu.person.entity.Client;
 import com.devsu.person.entity.Person;
+import com.devsu.person.entity.dto.ClientDto;
 import com.devsu.person.entity.dto.ClientRecord;
 
 public class TestHelper {
@@ -30,5 +31,9 @@ public class TestHelper {
 
   public static Person createPersonInstance() {
     return Person.builder().id(0L).identification("12345").build();
+  }
+
+  public static ClientDto createClientDto() {
+    return new ClientDto("id1", "12345");
   }
 }

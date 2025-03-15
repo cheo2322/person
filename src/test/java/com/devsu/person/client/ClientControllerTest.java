@@ -1,107 +1,88 @@
 package com.devsu.person.client;
 
-import com.devsu.person.entity.Client;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
+
 import com.devsu.person.entity.dto.ClientDto;
+import com.devsu.person.entity.dto.ClientRecord;
 import com.devsu.person.service.ClientService;
+import com.devsu.person.testHelper.TestHelper;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import org.springframework.http.ResponseEntity;
 
 class ClientControllerTest {
 
-    private MockMvc mockMvc;
+  @Mock private ClientService clientService;
 
-    @Mock
-    private ClientService clientService;
+  @InjectMocks private ClientController clientController;
 
-    @InjectMocks
-    private ClientController clientController;
+  @BeforeEach
+  void setUp() {
+    MockitoAnnotations.openMocks(this);
+  }
 
-    @BeforeEach
-    void setUp() {
-        try (AutoCloseable closeable = MockitoAnnotations.openMocks(this)) {
-            System.out.println(closeable.toString());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+  @Test
+  void createClient_shouldReturnOk() {
+    ClientRecord clientRecord = TestHelper.createClientRecord();
+    doNothing().when(clientService).createClient(clientRecord);
 
-        mockMvc = MockMvcBuilders.standaloneSetup(clientController).build();
-    }
+    ResponseEntity<Void> response = clientController.createClient(clientRecord);
 
-    @Test
-    void createClient() throws Exception {
-        ClientDto clientDto = new ClientDto();
+    assertEquals(200, response.getStatusCode().value());
+    verify(clientService).createClient(clientRecord);
+  }
 
-        when(clientService.createClient(any(Client.class))).thenReturn(clientDto);
+  @Test
+  void getClients_shouldReturnClientList() {
+    List<ClientDto> clientList =
+        List.of(TestHelper.createClientDto(), TestHelper.createClientDto());
+    when(clientService.getClients()).thenReturn(clientList);
 
-        mockMvc.perform(post("/test/v1/clients")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\":\"John Doe\"}"))
-                .andExpect(status().isOk());
+    ResponseEntity<List<ClientDto>> response = clientController.getClients();
 
-        verify(clientService, times(1)).createClient(any(Client.class));
-    }
+    assertEquals(200, response.getStatusCode().value());
+    assertEquals(clientList, response.getBody());
+    verify(clientService).getClients();
+  }
 
-    @Test
-    void getClients() throws Exception {
-        List<ClientDto> clients = Arrays.asList(new ClientDto(), new ClientDto());
+  @Test
+  void getClient_shouldReturnClientDto() {
+    String personIdentification = "12345";
+    ClientDto clientDto = TestHelper.createClientDto();
+    when(clientService.getClient(personIdentification)).thenReturn(clientDto);
 
-        when(clientService.getClients()).thenReturn(clients);
+    ResponseEntity<ClientDto> response = clientController.getClient(personIdentification);
 
-        mockMvc.perform(get("/test/v1/clients"))
-                .andExpect(status().isOk());
+    assertEquals(200, response.getStatusCode().value());
+    assertEquals(clientDto, response.getBody());
+    verify(clientService).getClient(personIdentification);
+  }
 
-        verify(clientService, times(1)).getClients();
-    }
+  @Test
+  void updateClient_shouldReturnOk() {
+    String clientId = "12345";
+    ClientRecord clientRecord = TestHelper.createClientRecord();
+    doNothing().when(clientService).updateClient(clientId, clientRecord);
 
-    @Test
-    void getClient() throws Exception {
-        ClientDto clientDto = new ClientDto();
+    ResponseEntity<Void> response = clientController.updateClient(clientId, clientRecord);
 
-        when(clientService.getClient(anyString())).thenReturn(clientDto);
+    assertEquals(200, response.getStatusCode().value());
+    verify(clientService).updateClient(clientId, clientRecord);
+  }
 
-        mockMvc.perform(get("/test/v1/clients/{clientId}", "1"))
-                .andExpect(status().isOk());
+  @Test
+  void deleteClient_shouldReturnOk() {
+    String personIdentification = "12345";
+    doNothing().when(clientService).deleteClient(personIdentification);
 
-        verify(clientService, times(1)).getClient("1");
-    }
+    ResponseEntity<Void> response = clientController.deleteClient(personIdentification);
 
-    @Test
-    void updateClient() throws Exception {
-        ClientDto clientDto = new ClientDto();
-
-        when(clientService.updateClient(any(ClientDto.class))).thenReturn(clientDto);
-
-        mockMvc.perform(put("/test/v1/clients/{clientId}", "1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\":\"John Doe Updated\"}"))
-                .andExpect(status().isOk());
-
-        verify(clientService, times(1)).updateClient(any(ClientDto.class));
-    }
-
-    @Test
-    void deleteClient() throws Exception {
-        ClientDto clientDto = new ClientDto();
-
-        when(clientService.deleteClient(anyString())).thenReturn(clientDto);
-
-        mockMvc.perform(delete("/test/v1/clients/{clientId}", "1"))
-                .andExpect(status().isOk());
-
-        verify(clientService, times(1)).deleteClient("1");
-    }
+    assertEquals(200, response.getStatusCode().value());
+    verify(clientService).deleteClient(personIdentification);
+  }
 }
