@@ -1,10 +1,16 @@
 package com.devsu.person.service.impl;
 
 import com.devsu.person.entity.Client;
+import com.devsu.person.entity.Person;
 import com.devsu.person.entity.dto.ClientDto;
+import com.devsu.person.entity.dto.ClientRecord;
+import com.devsu.person.handler.exception.DuplicateIdentificationException;
+import com.devsu.person.mapper.PersonMapper;
 import com.devsu.person.repository.ClientRepository;
+import com.devsu.person.repository.PersonRepository;
 import com.devsu.person.service.ClientService;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
@@ -12,15 +18,27 @@ import org.springframework.stereotype.Service;
 public class ClientServiceImpl implements ClientService {
 
   private final ClientRepository clientRepository;
+  private final PersonRepository personRepository;
 
-  public ClientServiceImpl(ClientRepository clientRepository) {
+  public ClientServiceImpl(ClientRepository clientRepository, PersonRepository personRepository) {
     this.clientRepository = clientRepository;
+    this.personRepository = personRepository;
   }
 
   @Override
-  public ClientDto createClient(Client client) {
-    Client savedClient = clientRepository.save(client);
-    return toDto(savedClient);
+  public void createClient(ClientRecord clientRecord) {
+    Person person = PersonMapper.recordToPerson(clientRecord);
+    Client client = PersonMapper.recordToClient(clientRecord);
+
+    this.verifyClient(client);
+
+    Optional<Person> personDB = personRepository.findByIdentification(person.getIdentification());
+    if (personDB.isEmpty()) {
+      personRepository.save(person);
+    }
+    client.setPerson(person);
+
+    clientRepository.save(client);
   }
 
   @Override

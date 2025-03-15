@@ -2,6 +2,7 @@ package com.devsu.person.client;
 
 import com.devsu.person.entity.Client;
 import com.devsu.person.entity.dto.ClientDto;
+import com.devsu.person.entity.dto.ClientRecord;
 import com.devsu.person.service.ClientService;
 import java.util.List;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,8 +25,10 @@ public class ClientController {
   }
 
   @PostMapping
-  public ClientDto createClient(@RequestBody Client client) {
-    return clientService.createClient(client);
+  public ResponseEntity<Void> createClient(@RequestBody ClientRecord client) {
+    clientService.createClient(client);
+
+    return ResponseEntity.ok().build();
   }
 
   @GetMapping
