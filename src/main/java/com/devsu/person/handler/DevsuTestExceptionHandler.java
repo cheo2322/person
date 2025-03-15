@@ -1,6 +1,6 @@
 package com.devsu.person.handler;
 
-import com.devsu.person.handler.exception.ClientNotFoundException;
+import com.devsu.person.handler.exception.EntityNotFoundException;
 import com.devsu.person.handler.exception.DuplicateIdentificationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +18,9 @@ public class DevsuTestExceptionHandler {
     return new ResponseEntity<>(new DevsuError(ex.getMessage()), HttpStatus.BAD_REQUEST);
   }
 
-  @ExceptionHandler(ClientNotFoundException.class)
+  @ExceptionHandler(EntityNotFoundException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
-  public ResponseEntity<DevsuError> handleClientNotFoundException(ClientNotFoundException ex) {
+  public ResponseEntity<DevsuError> handleClientNotFoundException(EntityNotFoundException ex) {
     return new ResponseEntity<>(new DevsuError(ex.getMessage()), HttpStatus.BAD_REQUEST);
   }
 

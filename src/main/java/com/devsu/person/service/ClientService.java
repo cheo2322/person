@@ -30,12 +30,13 @@ public interface ClientService {
    */
   ClientDto getClient(String clientId);
 
-    /**
-     * Update client details.
-     * @param client contains the details to be updated.
-     * @return A {@ClientDto}.
-     */
-    ClientDto updateClient(ClientRecord client);
+  /**
+   * Update clientRecord details.
+   *
+   * @param clientRecord contains the details to be updated.
+   * @return A {@link ClientDto}.
+   */
+  void updateClient(String clientId, ClientRecord clientRecord);
 
     /**
      * Delete a client from DB.

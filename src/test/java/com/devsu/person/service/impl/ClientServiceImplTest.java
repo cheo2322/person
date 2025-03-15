@@ -10,8 +10,8 @@ import com.devsu.person.entity.Client;
 import com.devsu.person.entity.Person;
 import com.devsu.person.entity.dto.ClientDto;
 import com.devsu.person.entity.dto.ClientRecord;
-import com.devsu.person.handler.exception.ClientNotFoundException;
 import com.devsu.person.handler.exception.DuplicateIdentificationException;
+import com.devsu.person.handler.exception.EntityNotFoundException;
 import com.devsu.person.repository.ClientRepository;
 import com.devsu.person.repository.PersonRepository;
 import com.devsu.person.testHelper.TestHelper;
@@ -136,17 +136,91 @@ class ClientServiceImplTest {
   }
 
   @Test
-  void shouldReturnClientNotFoundException() {
+  void shouldReturnEntityNotFoundException_whenClientNotFound_inGetClient() {
     // given
     when(clientRepository.findByPersonIdentification(anyString())).thenReturn(Optional.empty());
 
     // when
-    ClientNotFoundException clientNotFoundException =
-        assertThrows(ClientNotFoundException.class, () -> clientService.getClient("12345"));
+    EntityNotFoundException entityNotFoundException =
+        assertThrows(EntityNotFoundException.class, () -> clientService.getClient("12345"));
 
     // then
-    assertEquals("Client not found.", clientNotFoundException.getMessage());
+    assertEquals("Client not found.", entityNotFoundException.getMessage());
 
     verify(clientRepository).findByPersonIdentification(anyString());
   }
+
+  @Test
+  void shouldUpdateClient() {
+    // given
+    Client client = TestHelper.createClientInstance();
+    Person person = TestHelper.createPersonInstance();
+    ClientRecord clientRecord = TestHelper.createClientRecord();
+
+    when(clientRepository.findByPersonIdentification(anyString())).thenReturn(Optional.of(client));
+    when(personRepository.findByIdentification(anyString())).thenReturn(Optional.of(person));
+
+    // when
+    clientService.updateClient("12345", clientRecord);
+
+    // then
+
+    verify(clientRepository).findByPersonIdentification(anyString());
+    verify(personRepository).findByIdentification(anyString());
+  }
+
+  @Test
+  void shouldThrowEntityNotFoundException_whenClientNotFound_inUpdateClient() {
+    // given
+    ClientRecord clientRecord = TestHelper.createClientRecord();
+
+    when(clientRepository.findByPersonIdentification(anyString())).thenReturn(Optional.empty());
+
+    // when
+    EntityNotFoundException entityNotFoundException =
+        assertThrows(
+            EntityNotFoundException.class, () -> clientService.updateClient("12345", clientRecord));
+
+    // then
+    assertEquals("Client not found.", entityNotFoundException.getMessage());
+
+    verify(clientRepository).findByPersonIdentification(anyString());
+  }
+
+  @Test
+  void shouldThrowEntityNotFoundException_whenPersonNotFound_inUpdateClient() {
+    // given
+    Client client = TestHelper.createClientInstance();
+    ClientRecord clientRecord = TestHelper.createClientRecord();
+
+    when(clientRepository.findByPersonIdentification(anyString())).thenReturn(Optional.of(client));
+    when(personRepository.findByIdentification(anyString())).thenReturn(Optional.empty());
+
+    // when
+    EntityNotFoundException entityNotFoundException =
+        assertThrows(
+            EntityNotFoundException.class, () -> clientService.updateClient("12345", clientRecord));
+
+    // then
+    assertEquals("Person not found.", entityNotFoundException.getMessage());
+
+    verify(clientRepository).findByPersonIdentification(anyString());
+    verify(personRepository).findByIdentification(anyString());
+  }
+
+  //  @Test
+  //  void shouldDeleteClient_andReturnClientDto() {
+  //      // given
+  //      String clientId = "id1";
+  //      Client client = TestHelper.createClientInstance();
+  //      when(clientRepository.findByClientId(clientId)).thenReturn(client);
+  //
+  //      // when
+  //      ClientDto deletedClient = clientService.deleteClient(clientId);
+  //
+  //      // then
+  //      assertNotNull(deletedClient);
+  //
+  //      verify(clientRepository).delete(client);
+  //  }
 }

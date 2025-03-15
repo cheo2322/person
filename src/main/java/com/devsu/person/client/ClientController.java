@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,10 +41,13 @@ public class ClientController {
     return ResponseEntity.ok(clientService.getClient(personIdentification));
   }
 
-  @PutMapping("/{clientId}")
-  public ClientDto updateClient(@PathVariable String clientId, @RequestBody ClientDto clientDto) {
-    clientDto.setClientId(clientId);
-    return clientService.updateClient(clientDto);
+  @PatchMapping("/{clientId}")
+  public ResponseEntity<Void> updateClient(
+      @PathVariable String clientId, @RequestBody ClientRecord clientRecord) {
+
+    clientService.updateClient(clientId, clientRecord);
+
+    return ResponseEntity.ok().build();
   }
 
   @DeleteMapping("/{clientId}")
