@@ -1,3 +1,3 @@
 package com.devsu.person.entity.dto;
 
-public record ClientDto(String clientId) {}
+public record ClientDto(String clientId, String personIdentification) {}

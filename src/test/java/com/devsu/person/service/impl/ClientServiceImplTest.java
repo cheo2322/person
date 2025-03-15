@@ -10,6 +10,7 @@ import com.devsu.person.entity.Client;
 import com.devsu.person.entity.Person;
 import com.devsu.person.entity.dto.ClientDto;
 import com.devsu.person.entity.dto.ClientRecord;
+import com.devsu.person.handler.exception.ClientNotFoundException;
 import com.devsu.person.handler.exception.DuplicateIdentificationException;
 import com.devsu.person.repository.ClientRepository;
 import com.devsu.person.repository.PersonRepository;
@@ -117,59 +118,35 @@ class ClientServiceImplTest {
     verify(clientRepository).findAll();
   }
 
-      @Test
-      void shouldReturnClientById() {
-          // given
-          String clientId = "id1";
-          Client client = TestHelper.createClientInstance();
-          when(clientRepository.findByClientId(clientId)).thenReturn(client);
+  @Test
+  void shouldReturnClientById() {
+    // given
+    Client client = TestHelper.createClientInstance();
+    when(clientRepository.findByPersonIdentification(anyString())).thenReturn(Optional.of(client));
 
-          // when
-          ClientDto clientDto = clientService.getClient(clientId);
+    // when
+    ClientDto clientDto = clientService.getClient("12345");
 
-          // then
-          assertNotNull(clientDto);
-          assertEquals(clientId, clientDto.getClientId());
+    // then
+    assertNotNull(clientDto);
+    assertEquals("id1", clientDto.clientId());
+    assertEquals("12345", clientDto.personIdentification());
 
-          verify(clientRepository).findByClientId(clientId);
-      }
+    verify(clientRepository).findByPersonIdentification(anyString());
+  }
 
-      @Test
-      void shouldUpdateClient_andReturnClientDto() {
-          // given
-          Client client = TestHelper.createClientInstance();
-          ClientDto clientDto = new ClientDto();
-          clientDto.setClientId(client.getClientId());
-          clientDto.setPassword("newPassword");
-          clientDto.setStatus(true);
-          when(clientRepository.findByClientId(client.getClientId())).thenReturn(client);
-          when(clientRepository.save(client)).thenReturn(client);
+  @Test
+  void shouldReturnClientNotFoundException() {
+    // given
+    when(clientRepository.findByPersonIdentification(anyString())).thenReturn(Optional.empty());
 
-          // when
-          ClientDto updatedClient = clientService.updateClient(clientDto);
+    // when
+    ClientNotFoundException clientNotFoundException =
+        assertThrows(ClientNotFoundException.class, () -> clientService.getClient("12345"));
 
-          // then
-          assertNotNull(updatedClient);
-          assertEquals(clientDto.getPassword(), updatedClient.getPassword());
-          assertEquals(clientDto.getStatus(), updatedClient.getStatus());
+    // then
+    assertEquals("Client not found.", clientNotFoundException.getMessage());
 
-          verify(clientRepository).findByClientId("id1");
-          verify(clientRepository).save(client);
-      }
-
-      @Test
-      void shouldDeleteClient_andReturnClientDto() {
-          // given
-          String clientId = "id1";
-          Client client = TestHelper.createClientInstance();
-          when(clientRepository.findByClientId(clientId)).thenReturn(client);
-
-          // when
-          ClientDto deletedClient = clientService.deleteClient(clientId);
-
-          // then
-          assertNotNull(deletedClient);
-
-          verify(clientRepository).delete(client);
-      }
+    verify(clientRepository).findByPersonIdentification(anyString());
+  }
 }

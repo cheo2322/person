@@ -4,6 +4,7 @@ import com.devsu.person.entity.Client;
 import com.devsu.person.entity.Person;
 import com.devsu.person.entity.dto.ClientDto;
 import com.devsu.person.entity.dto.ClientRecord;
+import com.devsu.person.handler.exception.ClientNotFoundException;
 import com.devsu.person.handler.exception.DuplicateIdentificationException;
 import com.devsu.person.mapper.PersonMapper;
 import com.devsu.person.repository.ClientRepository;
@@ -49,9 +50,11 @@ public class ClientServiceImpl implements ClientService {
   }
 
   @Override
-  public ClientDto getClient(String clientId) {
-    Client client = clientRepository.findByClientId(clientId);
-    return client != null ? toDto(client) : null;
+  public ClientDto getClient(String personIdentification) {
+    return clientRepository
+        .findByPersonIdentification(personIdentification)
+        .map(PersonMapper::clientToDto)
+        .orElseThrow(() -> new ClientNotFoundException("Client not found."));
   }
 
   @Override
