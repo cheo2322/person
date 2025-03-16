@@ -1,12 +1,19 @@
 # Person microservice for Devsu Test
 
-Please add the 2 Spring Boot Projects into a single folder and then move the files `docker-composr.yml` and `BaseDatos.sql`
-out of this project.
+## Steps to execute
+- Add the 2 Spring Boot Projects into a single folder ([account project](https://github.com/cheo2322/account))
+- Move the files `docker-composer.yml` and `BaseDatos.sql` to the root folder
+   - root/
+     - account/
+     - person/
+     - docker-composer.yml
+     - BaseDatos.sql
 
-Execute the docker project by using
+- Execute the docker project by using
 ```bash
 $ docker-compose up --build
 ```
+
 ## Tasks
 
 1. Clients creation &#x2705;
