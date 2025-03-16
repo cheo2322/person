@@ -1,0 +1,469 @@
+{
+	"info": {
+		"_postman_id": "575c7333-1076-44a5-a868-fffb2495e5bc",
+		"name": "Person API",
+		"description": "This API contains:\n\n- CRUD operations for Person and Client\n    \n\nContact Support:  \nEmail: [sergio.hidalgo.e@gmail.com](https://mailto:sergio.hidalgo.e@gmail.com)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30070675"
+	},
+	"item": [
+		{
+			"name": "clients",
+			"item": [
+				{
+					"name": "{id}",
+					"item": [
+						{
+							"name": "Get a client by ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/test/v1/clients/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"test",
+										"v1",
+										"clients",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1234567890"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "A single client",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/clients/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"clients",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"id\": \"<long>\",\n  \"name\": \"<string>\",\n  \"gender\": \"OTHER\",\n  \"age\": \"<integer>\",\n  \"identification\": \"<string>\",\n  \"address\": \"<string>\",\n  \"phone\": \"<string>\",\n  \"clientId\": \"<string>\",\n  \"password\": \"<string>\",\n  \"status\": \"<string>\"\n}"
+								},
+								{
+									"name": "Client not found",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/clients/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"clients",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "Partially update a client by ID",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": \"<long>\",\n  \"name\": \"<string>\",\n  \"gender\": \"OTHER\",\n  \"age\": \"<integer>\",\n  \"identification\": \"<string>\",\n  \"address\": \"<string>\",\n  \"phone\": \"<string>\",\n  \"clientId\": \"<string>\",\n  \"password\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/test/v1/clients/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"test",
+										"v1",
+										"clients",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "<long>",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Client partially updated",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"id\": \"<long>\",\n  \"name\": \"<string>\",\n  \"gender\": \"OTHER\",\n  \"age\": \"<integer>\",\n  \"identification\": \"<string>\",\n  \"address\": \"<string>\",\n  \"phone\": \"<string>\",\n  \"clientId\": \"<string>\",\n  \"password\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/clients/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"clients",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Client not found",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"id\": \"<long>\",\n  \"name\": \"<string>\",\n  \"gender\": \"OTHER\",\n  \"age\": \"<integer>\",\n  \"identification\": \"<string>\",\n  \"address\": \"<string>\",\n  \"phone\": \"<string>\",\n  \"clientId\": \"<string>\",\n  \"password\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/clients/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"clients",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "Delete a client by ID",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/test/v1/clients/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"test",
+										"v1",
+										"clients",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "<long>",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Client deleted",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/clients/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"clients",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "No Content",
+									"code": 204,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Client not found",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/clients/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"clients",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "List all clients",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/test/v1/clients",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"test",
+								"v1",
+								"clients"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "List of clients",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/clients",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"clients"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"id\": \"<long>\",\n    \"name\": \"<string>\",\n    \"gender\": \"MALE\",\n    \"age\": \"<integer>\",\n    \"identification\": \"<string>\",\n    \"address\": \"<string>\",\n    \"phone\": \"<string>\",\n    \"clientId\": \"<string>\",\n    \"password\": \"<string>\",\n    \"status\": \"<string>\"\n  },\n  {\n    \"id\": \"<long>\",\n    \"name\": \"<string>\",\n    \"gender\": \"FEMALE\",\n    \"age\": \"<integer>\",\n    \"identification\": \"<string>\",\n    \"address\": \"<string>\",\n    \"phone\": \"<string>\",\n    \"clientId\": \"<string>\",\n    \"password\": \"<string>\",\n    \"status\": \"<string>\"\n  }\n]"
+						}
+					]
+				},
+				{
+					"name": "Create a new client",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Juan Osorio\",\n  \"gender\": \"MALE\",\n  \"age\": 29,\n  \"identification\": \"1234567893\",\n  \"address\": \"13 de junio y Equinoccial\",\n  \"phone\": \"098874587\",\n  \"clientId\": \"josorio\",\n  \"password\": \"1245\",\n  \"status\": \"true\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/test/v1/clients",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"test",
+								"v1",
+								"clients"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Client created",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": \"<long>\",\n  \"name\": \"<string>\",\n  \"gender\": \"OTHER\",\n  \"age\": \"<integer>\",\n  \"identification\": \"<string>\",\n  \"address\": \"<string>\",\n  \"phone\": \"<string>\",\n  \"clientId\": \"<string>\",\n  \"password\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/clients",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"clients"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "localhost:8080"
+		}
+	]
+}
